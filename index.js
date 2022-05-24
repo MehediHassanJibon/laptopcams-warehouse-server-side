@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
@@ -20,6 +20,17 @@ async function run() {
         const products = req.body;
         const result = await laptopCollection.insertOne(products);
         res.send(result.acknowledged)
+    })
+    app.get('/allproducts', async (req, res) => {
+        const cursor = laptopCollection.find({});
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+    app.delete('/manage', async (req, res) => {
+        const id = req.query.id;
+        const query = { _id: ObjectId(id) }
+        const result = await laptopCollection.deleteOne(query);
+        res.send(result.acknowledged);
     })
      
       console.log('DB Connected');
