@@ -16,6 +16,7 @@ async function run() {
     try {
       await client.connect();
       const laptopCollection =client.db('laptopCams').collection("laptops");
+      console.log('DB Connected');
       app.post('/allproducts', async (req, res) => {
         const products = req.body;
         const result = await laptopCollection.insertOne(products);
@@ -71,7 +72,7 @@ async function run() {
         res.send(result.acknowledged);
     })
      
-      console.log('DB Connected');
+      
     } finally {
     //   await client.close();
     }
